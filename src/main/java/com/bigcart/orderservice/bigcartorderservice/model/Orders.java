@@ -1,6 +1,5 @@
 package com.bigcart.orderservice.bigcartorderservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
