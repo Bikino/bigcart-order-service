@@ -1,4 +1,4 @@
-package com.bigcart.orderservice.bigcartorderservice.service.orderService.OrderDetialsService;
+package com.bigcart.orderservice.bigcartorderservice.service.OrderDetialsService;
 
 import org.springframework.stereotype.Service;
 

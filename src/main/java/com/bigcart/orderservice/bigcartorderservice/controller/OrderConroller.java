@@ -1,12 +1,10 @@
-package com.bigcart.orderservice.bigcartorderservice.OrderController;
+package com.bigcart.orderservice.bigcartorderservice.controller;
 
 import com.bigcart.orderservice.bigcartorderservice.FeignController.ProductProxy;
-import com.bigcart.orderservice.bigcartorderservice.model.OrderDetails;
 import com.bigcart.orderservice.bigcartorderservice.model.Orders;
-import com.bigcart.orderservice.bigcartorderservice.repository.OrderRepository;
-import com.bigcart.orderservice.bigcartorderservice.service.orderService.OrderService;
+import com.bigcart.orderservice.bigcartorderservice.service.OrderService;
+import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +33,8 @@ public class OrderConroller {
     @GetMapping("/{orderId}")
     public ResponseEntity<Orders> getOrder(@PathVariable Long orderId) {
 
-        return Optional.
-                ofNullable(orderService.getOrder(orderId)).
-                map(orders -> ResponseEntity.ok().body(orders.get())).
+        return orderService.getOrder(orderId).
+                map(orders -> ResponseEntity.ok().body(orders)).
                 orElseGet(() -> ResponseEntity.badRequest().build());
     }
 

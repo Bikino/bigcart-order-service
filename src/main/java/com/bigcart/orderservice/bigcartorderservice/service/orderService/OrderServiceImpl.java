@@ -1,8 +1,8 @@
-package com.bigcart.orderservice.bigcartorderservice.service.orderService.orderService;
+package com.bigcart.orderservice.bigcartorderservice.service.orderService;
 
 import com.bigcart.orderservice.bigcartorderservice.model.Orders;
 import com.bigcart.orderservice.bigcartorderservice.repository.OrderRepository;
-import com.bigcart.orderservice.bigcartorderservice.service.orderService.OrderService;
+import com.bigcart.orderservice.bigcartorderservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
     OrderRepository orderRepository;

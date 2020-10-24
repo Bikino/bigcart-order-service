@@ -12,3 +12,5 @@ insert into order_details  (id, price, product_id, quantity, orders_id)
  values (3, 7, 2, 1, 2);
 insert into order_details  (id, price, product_id, quantity, orders_id)
  values (4, 89, 5, 9, 2);
+insert into order_details  (id, price, product_id, quantity, orders_id)
+ values (5, 100, 5, 9, 2);
