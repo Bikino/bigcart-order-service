@@ -21,15 +21,25 @@ public class OrderDetails {
 
     private long productId;
     private double price;
+    private long vendorId;
     private int quantity;
 
     public OrderDetails(){
     }
 
-    public OrderDetails(long productId, double price, int quantity) {
+    public OrderDetails(long productId, double price, int quantity,long vendorId) {
         this.productId = productId;
         this.price = price;
         this.quantity = quantity;
+        this.vendorId = vendorId;
+    }
+
+    public long getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(long vendorId) {
+        this.vendorId = vendorId;
     }
 
     public long getId() {
@@ -66,5 +76,17 @@ public class OrderDetails {
 
     public void setOrders(Orders orders) {
         this.orders = orders;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDetails{" +
+                "id=" + id +
+                ", orders=" + orders +
+                ", productId=" + productId +
+                ", price=" + price +
+                ", vendorId=" + vendorId +
+                ", quantity=" + quantity +
+                '}';
     }
 }

@@ -19,7 +19,7 @@ public class Orders {
     private long paymentId;
     private LocalDate creationDate;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.MERGE)
     private Set<OrderDetails> orderDetails;
 
     public Orders(){
@@ -94,5 +94,18 @@ public class Orders {
     public Orders addOrderDetail(OrderDetails orderDetails){
         this.orderDetails.add(orderDetails);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", totalAmount=" + totalAmount +
+                ", addressId=" + addressId +
+                ", paymentId=" + paymentId +
+                ", creationDate=" + creationDate +
+                ", orderDetails=" + orderDetails +
+                '}';
     }
 }
