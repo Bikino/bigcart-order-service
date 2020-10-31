@@ -90,8 +90,8 @@ public class OrderConroller {
         }
     }
 
-    @PostMapping("/placeOrder")
-    public Orders placeOrder(@ApiIgnore HttpSession session) {
+    @PostMapping("/checkOut")
+    public ResponseEntity<Long> checkOut(@ApiIgnore HttpSession session) {
 
         Orders orders = (Orders)(session.getAttribute("shoppingCart"));
         System.out.println("placeOrder");
@@ -108,7 +108,7 @@ public class OrderConroller {
         System.out.println("------------------");
 //        productProxy.placeProducts(listDto);
         session.setAttribute("shoppingCart", new Orders());
-        return savedOrders;
+        return new ResponseEntity<Long>(savedOrders.getId(), HttpStatus.OK);
     }
 //    @GetMapping("/addPayment")
 //    public ResponseEntity addPayment(Long paymentId, Long orderId) {
