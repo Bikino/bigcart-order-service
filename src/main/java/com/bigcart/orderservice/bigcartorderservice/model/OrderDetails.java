@@ -14,7 +14,7 @@ public class OrderDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "orders_id")
     @JsonIgnore
     private Orders orders;
@@ -82,7 +82,7 @@ public class OrderDetails {
     public String toString() {
         return "OrderDetails{" +
                 "id=" + id +
-                ", orders=" + orders +
+                ", orders="  +
                 ", productId=" + productId +
                 ", price=" + price +
                 ", vendorId=" + vendorId +
