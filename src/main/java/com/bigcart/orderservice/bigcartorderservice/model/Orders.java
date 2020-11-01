@@ -94,6 +94,8 @@ public class Orders {
     public Orders addOrderDetail(OrderDetails orderDetails){
         this.orderDetails.add(orderDetails);
         orderDetails.setOrders(this);
+        this.setTotalAmount(this.getTotalAmount() +
+                orderDetails.getQuantity() * orderDetails.getPrice());
         return this;
     }
 
