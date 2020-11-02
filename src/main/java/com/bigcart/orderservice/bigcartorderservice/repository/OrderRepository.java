@@ -12,7 +12,7 @@ import java.util.Set;
 @Repository
 public interface OrderRepository extends JpaRepository<Orders,Long> {
     public Set<Orders> findByUserId(long userId);
-    @Query("select od From Orders od inner join OrderDetails o on od.id = o.orders.id and o.vendorId = ?1 ")
+    @Query("select distinct od From Orders od inner join OrderDetails o on od.id = o.orders.id and o.vendorId = ?1 ")
     List<Orders> findOrdersByVendorId(long id);
 
 }
