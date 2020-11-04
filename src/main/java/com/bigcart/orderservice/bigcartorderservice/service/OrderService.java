@@ -14,4 +14,5 @@ public interface OrderService {
     public Orders addOrder(Orders orders);
     public List<Orders> getVendorOrders(Long vendorId);
     public List<Orders> getAllOrders();
+    public void sendNotification(Orders orders);
 }

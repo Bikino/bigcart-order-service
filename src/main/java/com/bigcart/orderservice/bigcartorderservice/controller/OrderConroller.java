@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
@@ -102,10 +103,11 @@ public class OrderConroller {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/checkOut")
-    public ResponseEntity<Long> checkOut(@ApiIgnore HttpSession session) {
+    @GetMapping("/checkOut/{userId}")
+    public ResponseEntity<Long> checkOut(@PathVariable Long userId, @ApiIgnore HttpSession session) {
 
         Orders orders = (Orders)(session.getAttribute("shoppingCart"));
+        orders.setUserId(userId);
         Orders savedOrders = orderService.addOrder(orders);
         ListDto listDto = new ListDto();
         Iterator<OrderDetails> ordIterator = savedOrders.getOrderDetails().iterator();
@@ -114,8 +116,14 @@ public class OrderConroller {
             ItemDto itemDto = new ItemDto(details.getProductId(), details.getVendorId(), details.getQuantity());
             listDto.addToList(itemDto);
         }
-        productProxy.placeProducts(listDto);
+        System.out.println("ProductProxy");
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.postForEntity("http://localhost:8006/product/remove/", listDto, ListDto.class);
+//        productProxy.placeProducts(listDto);
         session.setAttribute("shoppingCart", new Orders());
+        //sendNotification
+        System.out.println("before send notification");
+        orderService.sendNotification(savedOrders);
         return new ResponseEntity<Long>(savedOrders.getId(), HttpStatus.OK);
     }
 
@@ -129,6 +137,10 @@ public class OrderConroller {
                 }).
                 orElseGet(() -> ResponseEntity.notFound().build());
 
+    }
+    @PostMapping("/productNames")
+    public void getProductNames(@RequestBody Orders orders) {
+       orderService.sendNotification(orders);
     }
 }
 
