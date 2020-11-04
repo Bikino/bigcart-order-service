@@ -67,20 +67,27 @@ public class OrderConroller {
         return new ResponseEntity<List<Orders>>(orders, HttpStatus.OK);
     }
 
-    @PostMapping("/addToCart")
-    public ResponseEntity shoppingCart(@RequestBody OrderDetails orderDetails,@ApiIgnore HttpSession session) {
-        if (session.isNew()) {
-            Orders shoppingCard = new Orders();
-            session.setAttribute("shoppingCart", shoppingCard);
+    @PostMapping("/addToCart/{orderId}")
+    public ResponseEntity<Long> shoppingCart(@RequestBody OrderDetails orderDetails, @PathVariable long orderId, @ApiIgnore HttpSession session) {
+//        if (session.isNew()) {
+//            Orders shoppingCard = new Orders();
+//            session.setAttribute("shoppingCart", shoppingCard);
+//        }
+        if(orderId == 0) {
+            Orders shoppingCart = new Orders();
+            orderId = orderService.addOrder(shoppingCart).getId();
         }
-        Orders shoppingCard = (Orders) session.getAttribute("shoppingCart");
-        shoppingCard.addOrderDetail(orderDetails);
-        return new ResponseEntity(HttpStatus.OK);
+        //Orders shoppingCard = (Orders) session.getAttribute("shoppingCart");
+        Orders shoppingCart = orderService.getOrder(orderId).get();
+        shoppingCart.addOrderDetail(orderDetails);
+        orderService.addOrder(shoppingCart);
+        return new ResponseEntity<Long>(orderId,HttpStatus.OK);
     }
 
-    @PutMapping("/shoppingCart/{vendorId}/{productId}/{quantity}")
-    public ResponseEntity updateShoppingCart(@PathVariable long vendorId, @PathVariable Long productId, @PathVariable int quantity,@ApiIgnore HttpSession session) {
-        Orders shoppingCart = (Orders) session.getAttribute("shoppingCart");
+    @PutMapping("/shoppingCart/{orderId/{vendorId}/{productId}/{quantity}")
+    public ResponseEntity updateShoppingCart(@PathVariable long orderId, @PathVariable long vendorId, @PathVariable Long productId, @PathVariable int quantity,@ApiIgnore HttpSession session) {
+        //Orders shoppingCart = (Orders) session.getAttribute("shoppingCart");
+        Orders shoppingCart = orderService.getOrder(orderId).get();
         Set<OrderDetails> set = shoppingCart.getOrderDetails();
         Iterator<OrderDetails> detailsIterator = set.iterator();
 
@@ -100,13 +107,15 @@ public class OrderConroller {
                 }
             }
         }
+        orderService.addOrder(shoppingCart);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/checkOut/{userId}")
-    public ResponseEntity<Long> checkOut(@PathVariable Long userId, @ApiIgnore HttpSession session) {
+    @GetMapping("/checkOut/{orderId}/{userId}")
+    public ResponseEntity<Long> checkOut(@PathVariable long orderId, @PathVariable Long userId, @ApiIgnore HttpSession session) {
 
-        Orders orders = (Orders)(session.getAttribute("shoppingCart"));
+        //Orders orders = (Orders)(session.getAttribute("shoppingCart"));
+        Orders orders = orderService.getOrder(orderId).get();
         orders.setUserId(userId);
         Orders savedOrders = orderService.addOrder(orders);
         ListDto listDto = new ListDto();
