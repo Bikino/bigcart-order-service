@@ -78,15 +78,15 @@ public class OrderConroller {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PutMapping("/shoppingCart/{productId}/{quantity}")
-    public ResponseEntity updateShoppingCart(@PathVariable Long productId, @PathVariable int quantity,@ApiIgnore HttpSession session) {
+    @PutMapping("/shoppingCart/{vendorId}/{productId}/{quantity}")
+    public ResponseEntity updateShoppingCart(@PathVariable long vendorId, @PathVariable Long productId, @PathVariable int quantity,@ApiIgnore HttpSession session) {
         Orders shoppingCart = (Orders) session.getAttribute("shoppingCart");
         Set<OrderDetails> set = shoppingCart.getOrderDetails();
         Iterator<OrderDetails> detailsIterator = set.iterator();
 
         while(detailsIterator.hasNext()) {
             OrderDetails orderDetails = detailsIterator.next();
-            if(orderDetails.getProductId() == productId) {
+            if(orderDetails.getProductId() == productId && orderDetails.getVendorId() == vendorId) {
                 System.out.println(shoppingCart.getTotalAmount());//
                 shoppingCart.setTotalAmount(shoppingCart.getTotalAmount() -
                         orderDetails.getPrice() * orderDetails.getQuantity());
@@ -119,7 +119,7 @@ public class OrderConroller {
         System.out.println("ProductProxy");
 //        RestTemplate restTemplate = new RestTemplate();
 //        restTemplate.postForEntity("http://localhost:8006/product/remove/", listDto, ListDto.class);
-//        productProxy.placeProducts(listDto);
+        productProxy.placeProducts(listDto);
         session.setAttribute("shoppingCart", new Orders());
         //sendNotification
         System.out.println("before send notification");
