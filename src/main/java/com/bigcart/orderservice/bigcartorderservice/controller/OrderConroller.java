@@ -20,8 +20,8 @@ import java.util.*;
 @RestController
 @RequestMapping("/order")
 public class OrderConroller {
-    @Autowired
-    ProductProxy productProxy;
+   // @Autowired
+  //  ProductProxy productProxy;
     @Autowired
     OrderService orderService;
     @Autowired
@@ -84,7 +84,7 @@ public class OrderConroller {
         return new ResponseEntity<Long>(orderId,HttpStatus.OK);
     }
 
-    @PutMapping("/shoppingCart/{orderId/{vendorId}/{productId}/{quantity}")
+    @PutMapping("/shoppingCart/{orderId}/{vendorId}/{productId}/{quantity}")
     public ResponseEntity updateShoppingCart(@PathVariable long orderId, @PathVariable long vendorId, @PathVariable Long productId, @PathVariable int quantity,@ApiIgnore HttpSession session) {
         //Orders shoppingCart = (Orders) session.getAttribute("shoppingCart");
         Orders shoppingCart = orderService.getOrder(orderId).get();
@@ -126,9 +126,10 @@ public class OrderConroller {
             listDto.addToList(itemDto);
         }
         System.out.println("ProductProxy");
-//        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.postForEntity("http://localhost:8006/product/remove/", listDto, ListDto.class);
-        productProxy.placeProducts(listDto);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForEntity("http://localhost:8001/vendorproduct/remove/", listDto, ListDto.class);
+       // productProxy.placeProducts(listDto);
+
         session.setAttribute("shoppingCart", new Orders());
         //sendNotification
         System.out.println("before send notification");

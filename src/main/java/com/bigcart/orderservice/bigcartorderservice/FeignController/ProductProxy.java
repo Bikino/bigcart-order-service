@@ -15,7 +15,7 @@ import java.util.List;
 @RibbonClient(name= "product-service")
 public interface ProductProxy {
 
-    @PostMapping("/product-service/product/remove")
+    @PostMapping("/product-service/vendorproduct/remove")
     public void placeProducts(@RequestBody ListDto listDto);
 
     @PostMapping("/product-service/product/productNames")

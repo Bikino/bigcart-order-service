@@ -3,6 +3,7 @@ package com.bigcart.orderservice.bigcartorderservice.service.orderService;
 import com.bigcart.orderservice.bigcartorderservice.FeignController.ProductProxy;
 import com.bigcart.orderservice.bigcartorderservice.dto.BuyerDTO;
 import com.bigcart.orderservice.bigcartorderservice.dto.Email;
+import com.bigcart.orderservice.bigcartorderservice.dto.ListDto;
 import com.bigcart.orderservice.bigcartorderservice.model.OrderDetails;
 import com.bigcart.orderservice.bigcartorderservice.model.Orders;
 import com.bigcart.orderservice.bigcartorderservice.repository.OrderDetailsRepository;
@@ -62,8 +63,10 @@ public class OrderServiceImpl implements OrderService {
         for(OrderDetails o : orderedList) {
             list.add(o.getProductId());
         }
-        ResponseEntity responseEntity = productProxy.getProductName(list);
-        List<String> names = (List<String>) responseEntity.getBody();
+        RestTemplate restTemplate = new RestTemplate();
+        List<String> names=restTemplate.postForObject("http://localhost:8001/product/productNames",list, List.class);
+        //ResponseEntity responseEntity = productProxy.getProductName(list);
+   //     = (List<String>) responseEntity.getBody();
 
         System.out.println("before stringBuilder");
         StringBuilder builder = new StringBuilder();
@@ -87,8 +90,8 @@ public class OrderServiceImpl implements OrderService {
         email.setTo("mohamed.farahat4544@gmai.com");
 
         System.out.println("before send email");
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForEntity("http://localhost:8006/notify/", email, Email.class);
+        RestTemplate restTemplates = new RestTemplate();
+        restTemplates.postForEntity("http://localhost:8006/notify/", email, Email.class);
         System.out.println("after send email");
     }
 
